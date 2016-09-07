@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+    <head>
+        <title>修改文章</title>
+        <meta http-equiv="content-type" content="text/html;charset=utf-8">
+        <link href="/static/manager/css/mine.css" type="text/css" rel="stylesheet">
+    </head>
+
+    <body>
+
+        <div class="div_head">
+            <span>
+                <span style="float:left">当前位置是：网站管理-》修改文章信息</span>
+                <span style="float:right;margin-right: 8px;font-weight: bold">
+                    <a style="text-decoration: none" href="{% url 'admin_article_show' %}">【返回】</a>
+                </span>
+            </span>
+        </div>
+        <div></div>
+
+        <div style="font-size: 13px;margin: 10px 5px">
+            <form action="" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <table border="1" width="100%" class="table_a">
+                <tr>
+                    <td>文章名称</td>
+                    <td><input type="text" name="articleName" value="{{ article.articlename }}" /></td>
+                    <input type="text" name="articleId" value="{{ article.id }}" style="display: none" />
+                </tr>
+                <tr>
+                    <td>文章栏目</td>
+                    <td>
+                        <select name="articleColumn">
+                            {% for column in columns %}
+                            <option value="{{ column.id }}" {% if article.articlecolumn.id == column.id%} selected="selected"{% endif %}>{{ column.columnname }}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>文章作者</td>
+                    <td>
+                        <select name="atricleUser">
+                            {% for user in users %}
+                            <option value="{{ user.id }}" {% if article.articleuser.id == user.id%} selected="selected"{% endif %}>{{user.username}}</option>
+                            {% endfor %}
+                        </select></td>
+                </tr>
+                <tr>
+                    <td>文章图片</td>
+                    <td>{% if article.articlepic %}<img src="{{ article.articlepic.url }}" width="50" height="50"> {% endif %}
+                    <input type="file" name="articlePic"/></td>
+                </tr>
+                <tr>
+                    <td>文章内容</td>
+                    <td>
+                        <textarea name="articleCount">{{ article.articlecontent }}</textarea>
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td colspan="2" align="center">
+                        <input type="submit" value="修改">
+                    </td>
+                </tr>  
+            </table>
+            </form>
+        <span>{{ note }}</span>
+        </div>
+    </body>
+</html>

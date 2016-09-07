@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+
+        <title>文章列表</title>
+
+        <link href="/static/manager/css/mine.css" type="text/css" rel="stylesheet" />
+    </head>
+    <body>
+        <style>
+            .tr_color{background-color: #9F88FF}
+        </style>
+        <div class="div_head">
+            <span>
+                <span style="float: left;">当前位置是：网站管理-》文章列表</span>
+                <span style="float: right; margin-right: 8px; font-weight: bold;">
+                    <a style="text-decoration: none;" href="{% url 'admin_article_add' %}">【添加文章】</a>
+                </span>
+            </span>
+        </div>
+        <div></div>
+        <div style="font-size: 13px; margin: 10px 5px;">
+            <table class="table_a" border="1" width="100%">
+                <tbody><tr style="font-weight: bold;">
+                        <td>序号</td>
+                        <td>文章名称</td>
+                        <td>作者</td>
+                        <td>图片</td>
+                        <td>所属栏目</td>
+                        <td>创建时间</td>
+                        <td align="center">操作</td>
+                    </tr>
+                    {% for article in page.object_list %}
+                    <tr id="product1">
+                        <td>{{ page.start_index|add:forloop.counter0}}</td>
+                        <td><a href="#">{{ article.articlename }}</a></td>
+                        <td>{{ article.articleuser.username }}</td>
+                        {% if article.articlepic %}
+                            <td><img src="{{ article.articlepic.url }}" height="60" width="60"></td>
+                        {% else %}
+                            <td>没有缩略图</td>
+                        {% endif %}
+                        <td>{{ article.articlecolumn.columnname }}</td>
+                        <td>{{ article.articletime|date:"Y-m-d"}}</td>
+                        <td><a href="{% url 'admin_article_edit' %}?articleId={{ article.id }}">修改</a></td>
+                        <td><a href="{% url 'admin_article_del' %}?articleId={{ article.id }}" onclick="return confirm('确定要删除此文章吗？');">删除</a></td>
+                    </tr>
+                    {% endfor %}
+                    <tr>
+                        <td colspan="20" style="text-align: center;">
+                             {% for pageNumber in page.paginator.page_range_ext %}
+                                    <a href="?pageNumber={{ pageNumber }}">{{ pageNumber }}</a>
+                             {% endfor %}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <span>{{ MEDIA_URL }}</span>
+        </div>
+    </body>
+</html>
